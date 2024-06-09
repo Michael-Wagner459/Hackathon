@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
+//styling of the container the slideshow is in
 const SlideshowContainer = styled.div`
 	width: 100%;
 	max-width: 600px;
@@ -10,7 +11,7 @@ const SlideshowContainer = styled.div`
 	overflow: hidden;
 	position: relative;
 `;
-
+//styling of the slide component of the slide show
 const Slide = styled.div`
 	display: ${(props) => (props.active ? 'block' : 'none')};
 	width: 100%;
@@ -21,6 +22,7 @@ const Slide = styled.div`
 	background-position: center;
 `;
 
+//makes a slide show of pictures that rotate through on the home page
 const Slideshow = () => {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const images = [
@@ -35,8 +37,10 @@ const Slideshow = () => {
 		'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MzR8fHxlbnwwfHx8fHw%3D',
 		'https://images.unsplash.com/photo-1496412705862-e0088f16f791?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8NDR8fHxlbnwwfHx8fHw%3D',
 	];
+	//length of how long each picture shows in the slide show in MS
 	const interval = 5000;
 
+	//changes the picture in the slide show based on the time entered in the interval parameter
 	useEffect(() => {
 		const timer = setInterval(() => {
 			setCurrentIndex((prevIndex) =>
@@ -47,6 +51,7 @@ const Slideshow = () => {
 		return () => clearInterval(timer); // Cleanup the interval on component unmount
 	}, [images.length, interval]);
 
+	//ui of the slide show
 	return (
 		<SlideshowContainer>
 			{images.map((image, index) => (

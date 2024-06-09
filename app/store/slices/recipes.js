@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+//api options to get list of food items
 const defaultOptionsRecipes = {
 	method: 'GET',
 	url: 'https://tasty.p.rapidapi.com/recipes/list',
@@ -14,7 +15,7 @@ const defaultOptionsRecipes = {
 		'X-RapidAPI-Host': 'tasty.p.rapidapi.com',
 	},
 };
-
+// api options to get specific details on one food by ID
 const defaultOptionsRecipe = {
 	method: 'GET',
 	url: 'https://tasty.p.rapidapi.com/recipes/get-more-info',
@@ -24,6 +25,8 @@ const defaultOptionsRecipe = {
 		'x-rapidapi-host': 'tasty.p.rapidapi.com',
 	},
 };
+
+//function to format the data request of a list of foods
 const processRecipes = (data) => {
 	return data.results.map((data) => ({
 		name: data.name,
@@ -32,6 +35,7 @@ const processRecipes = (data) => {
 	}));
 };
 
+//function that formats the API data for an individual recipe
 const processRecipe = (data) => {
 	const name = data.name || 'No name was provided';
 	const thumbnail = data.thumbnail_url || null;
@@ -66,6 +70,7 @@ const processRecipe = (data) => {
 	};
 };
 
+//makes api request for individual recipe
 export const fetchRecipe = createAsyncThunk(
 	'recipes/fetchRecipe',
 	async (id) => {
@@ -75,7 +80,7 @@ export const fetchRecipe = createAsyncThunk(
 		return processRecipe(response.data);
 	}
 );
-
+// makes api request for list of recipes
 export const fetchRecipes = createAsyncThunk(
 	'recipes/fetchRecipes',
 	async (ingredient) => {
@@ -86,65 +91,12 @@ export const fetchRecipes = createAsyncThunk(
 	}
 );
 
+//slice to keep track of state
 export const recipeSlice = createSlice({
 	name: 'recipes',
 	initialState: {
-		recipes: [
-			// {
-			// 	name: 'How To Make Classic French Toast',
-			// 	thumbnail:
-			// 		'https://img.buzzfeed.com/thumbnailer-prod-us-east-1/video-api/assets/341495.jpg',
-			// 	id: 8110,
-			// 	servings: 'Servings: 4',
-			// },
-			// {
-			// 	name: 'Easy Beef Hand Pies',
-			// 	thumbnail:
-			// 		'https://img.buzzfeed.com/tasty-app-user-assets-prod-us-east-1/recipes/11e6176999dd4d3fa7444224e8891cdb.jpeg',
-			// 	id: 8107,
-			// 	servings: 'Servings: 4',
-			// },
-		],
-		individualRecipe: {
-			// name: 'Easy Beef Hand Pies',
-			// thumbnail:
-			// 	'https://img.buzzfeed.com/tasty-app-user-assets-prod-us-east-1/recipes/11e6176999dd4d3fa7444224e8891cdb.jpeg',
-			// instructions: [
-			// 	'Preheat the oven to 200°C.',
-			// 	'Combine the onion, green pepper, spices, and soy sauce together in a medium bowl. Add the mince and the egg to the other bowl and mix well until all the ingredients are well-combined.',
-			// 	'Roll out the thawed puff pastry until it measures approximately 33 x 27 cm. Once this is done, cut the puff pastry into 4 equal pieces (approximately 8cm in size).',
-			// 	'Fill each piece of puff pastry with approximately 55g of the mince mixture. Spread the mixture generously onto the puff pastry, making sure to leave enough space around the edges for folding.',
-			// 	'Dab some water around the edges of the puff pastry and fold to make a “pie shape”. Use a fork to help you seal the edges, if necessary. Brush the top of the pies with a beaten egg. Make slight incisions on the top of each hand pie to allow the steam to escape.',
-			// 	'Bake for 20-25 minutes, or until the crust is golden-brown and crispy.',
-			// 	'Serve alongside tomato sauce.',
-			// ],
-			// video: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-			// numServings: 4,
-			// nutritionFacts: [
-			// 	'calories:820',
-			// 	'carbohydrates:58',
-			// 	'fat:54',
-			// 	'fiber:2',
-			// 	'protein:25',
-			// 	'sugar:3',
-			// ],
-			// ingredients: [
-			// 	'1 large onion, diced and chopped',
-			// 	'½ green pepper, diced and chopped',
-			// 	'320 grams ground beef mince, fully defrosted',
-			// 	'1 tsp sweet basil, dried',
-			// 	'½ tsp chili flakes',
-			// 	'1 tsp cinnamon',
-			// 	'½ tsp salt',
-			// 	'2 tsp dried mixed herbs',
-			// 	'1 tbsp beef seasoning',
-			// 	'400 grams puff pastry, fully thawed',
-			// 	'2 eggs',
-			// 	'2 tsp soy sauce',
-			// 	'1 tsp crushed garlic',
-			// ],
-			// time: 'Under 1 hour',
-		},
+		recipes: [],
+		individualRecipe: {},
 		status: 'idle',
 		error: null,
 	},

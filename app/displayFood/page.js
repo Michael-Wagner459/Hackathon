@@ -5,12 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 
 export default function Home() {
-	// const dispatch = useDispatch();
-	// useEffect(() => {
-	// 	dispatch(fetchRecipes());
-	// }, [dispatch]);
 	const recipes = useSelector((state) => state.recipes.recipes);
 
+	//renders a list of recipes that is recieved from the API request. Each recipe row is linked to the individual recipe page
 	const renderRecipes = () => {
 		if (recipes.length > 0) {
 			return recipes.map((recipe, index) => {
@@ -45,6 +42,7 @@ export default function Home() {
 		} else return <h1>Sorry there are no recipes!</h1>;
 	};
 
+	//ui of recipe list page
 	return (
 		<body id='background-image'>
 			<div>

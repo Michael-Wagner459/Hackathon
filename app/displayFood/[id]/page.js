@@ -10,23 +10,27 @@ export default function RecipeDisplay() {
 
 	const dispatch = useDispatch();
 
+	//makes api request to get specific information on an individual recipe by ID
 	useEffect(() => {
 		dispatch(fetchRecipe(id));
 	}, [dispatch, id]);
 
+	//sets state
 	const recipe = useSelector((state) => state.recipes.individualRecipe);
 
-	console.log(recipe);
+	//formats the ingredients into a list form
 	const listIngredients = recipe.ingredients?.map((ingredient, index) => (
 		<li key={index}>
 			<span>{ingredient}</span>
 		</li>
 	));
+	//formats the instructions into list form
 	const listInstructions = recipe.instructions?.map((direction, index) => (
 		<li key={index}>
 			<span>{direction}</span>
 		</li>
 	));
+	//formats the nutrition facts into list form with a fail safe incase they are not provided
 	const listNutritionFacts = recipe.nutritionFacts?.length ? (
 		recipe.nutritionFacts.map((fact, index) => (
 			<li key={index}>
@@ -37,6 +41,7 @@ export default function RecipeDisplay() {
 		<li>There are no Nutrition Facts listed</li>
 	);
 
+	//formats video components and has a fail safe in case video url is not provided
 	const displayVideo = () => {
 		if (recipe.video) {
 			return (
@@ -50,6 +55,7 @@ export default function RecipeDisplay() {
 		}
 	};
 
+	//ui of the individual recipe that is being displayed
 	return (
 		<body id='background-image'>
 			<div className='text-center container'>

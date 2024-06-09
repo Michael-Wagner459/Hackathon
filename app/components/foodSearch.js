@@ -9,11 +9,14 @@ export default function FoodSearch() {
 	const router = useRouter();
 	const [food, setFood] = useState('');
 
+	//submit form function that uses fetchRecipes to make an API requeest then routes the page to display food where it will display a list of recipes
 	const handleFormSubmit = (event) => {
 		event.preventDefault();
 		dispatch(fetchRecipes(food));
 		router.push('/displayFood');
 	};
+
+	//ui of the form section to enter in the ingredient or food you want
 	return (
 		<form onSubmit={handleFormSubmit}>
 			<div className='col-6 offset-3'>
