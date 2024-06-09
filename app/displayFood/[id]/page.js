@@ -17,64 +17,78 @@ export default function RecipeDisplay() {
 	const recipe = useSelector((state) => state.recipes.individualRecipe);
 
 	console.log(recipe);
-	// const listIngredients = recipe.ingredients.map((ingredient, index) => (
-	// 	<li key={index}>
-	// 		<span>{ingredient}</span>
-	// 	</li>
-	// ));
-	// const listInstructions = recipe.instructions.map((direction, index) => (
-	// 	<li key={index}>
-	// 		<span>{direction}</span>
-	// 	</li>
-	// ));
-	// const listNutritionFacts = recipe.nutritionFacts.map((fact, index) => (
-	// 	<li key={index}>
-	// 		<span>{fact}</span>
-	// 	</li>
-	// ));
+	const listIngredients = recipe.ingredients?.map((ingredient, index) => (
+		<li key={index}>
+			<span>{ingredient}</span>
+		</li>
+	));
+	const listInstructions = recipe.instructions?.map((direction, index) => (
+		<li key={index}>
+			<span>{direction}</span>
+		</li>
+	));
+	const listNutritionFacts = recipe.nutritionFacts?.length ? (
+		recipe.nutritionFacts.map((fact, index) => (
+			<li key={index}>
+				<span>{fact}</span>
+			</li>
+		))
+	) : (
+		<li>There are no Nutrition Facts listed</li>
+	);
 
-	// return (
-	// 	<body id='background-image'>
-	// 		<div className='text-center container'>
-	// 			<div className='row'>
-	// 				<div className='col-9'>
-	// 					<br />
-	// 					<img src={recipe.thumbnail} id='recipePicture' />
-	// 					<br />
-	// 					<h3>
-	// 						<span>Ingredients</span>
-	// 					</h3>
-	// 					{listIngredients}
-	// 				</div>
-	// 				<div className='col-3'>
-	// 					<br />
-	// 					<br />
-	// 					<h2>
-	// 						<span>Nutrition Facts</span>
-	// 					</h2>
-	// 					{listNutritionFacts}
-	// 				</div>
-	// 			</div>
-	// 			<div>
-	// 				<br />
-	// 				<h1>{recipe.name}</h1>
-	// 				<br />
-	// 				<br />
-	// 				<h3>Directions</h3>
-	// 				{listInstructions}
-	// 				<br />
-	// 				<br />
-	// 				<video width='640' height='480' controls>
-	// 					<source src={recipe.video} type='video/mp4' />
-	// 					Your browser does not support the video tag.
-	// 				</video>
-	// 			</div>
-	// 			<div className='col-3 offset-5 text-center' id='back'>
-	// 				<span>
-	// 					<Link href='/displayFood'>Back</Link>
-	// 				</span>
-	// 			</div>
-	// 		</div>
-	// 	</body>
-	// );
+	const displayVideo = () => {
+		if (recipe.video) {
+			return (
+				<video width='640' height='480' controls>
+					<source src={recipe.video} type='video/mp4' />
+					Your browser does not support the video tag.
+				</video>
+			);
+		} else {
+			return <h2>Sorry a video was not provided.</h2>;
+		}
+	};
+
+	return (
+		<body id='background-image'>
+			<div className='text-center container'>
+				<div className='row'>
+					<div className='col-9'>
+						<br />
+						<img src={recipe.thumbnail} id='recipePicture' />
+						<br />
+						<h3>
+							<span>Ingredients</span>
+						</h3>
+						{listIngredients}
+					</div>
+					<div className='col-3'>
+						<br />
+						<br />
+						<h2>
+							<span>Nutrition Facts</span>
+						</h2>
+						{listNutritionFacts}
+					</div>
+				</div>
+				<div>
+					<br />
+					<h1>{recipe.name}</h1>
+					<br />
+					<br />
+					<h3>Directions</h3>
+					{listInstructions}
+					<br />
+					<br />
+					{displayVideo()}
+				</div>
+				<div className='col-3 offset-5 text-center' id='back'>
+					<span>
+						<Link href='/displayFood'>Back</Link>
+					</span>
+				</div>
+			</div>
+		</body>
+	);
 }

@@ -36,10 +36,9 @@ const processRecipe = (data) => {
 	const name = data.name || 'No name was provided';
 	const thumbnail = data.thumbnail_url || null;
 	const instructions =
-		data.instructions || 'No instructions were provided'
+		data.instructions || null
 			? data.instructions.map(
-					(instruction) =>
-						instruction.display_text || 'No instruction text'
+					(instruction) => instruction.display_text || null
 				)
 			: ['No instructions available'];
 	const video = data.original_video_url || null;
@@ -47,23 +46,14 @@ const processRecipe = (data) => {
 	const nutritionFacts =
 		Object.entries(data.nutrition).map(
 			([key, value]) => `${key}: ${value}`
-		) || 'No nutrition facts were provided';
+		) || null;
 	const ingredients = data.sections.flatMap(
 		(section) =>
-			section.components.map((component) => component.raw_text) ||
-			'No ingredients were provided'
+			section.components.map((component) => component.raw_text) || null
 	);
 	const time =
-		data.total_time_tier.display_tier || 'No cook time was provided';
+		data.total_time_tier?.display_tier || 'No cooking time was provided.';
 
-	console.log(name);
-	console.log(thumbnail);
-	console.log(instructions);
-	console.log(video);
-	console.log(numServings);
-	console.log(nutritionFacts);
-	console.log(ingredients);
-	console.log(time);
 	return {
 		name: name,
 		thumbnail: thumbnail,
@@ -178,7 +168,7 @@ export const recipeSlice = createSlice({
 			})
 			.addCase(fetchRecipe.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.post = action.payload;
+				state.individualRecipe = action.payload;
 			})
 			.addCase(fetchRecipe.rejected, (state, action) => {
 				state.status = 'failed';
